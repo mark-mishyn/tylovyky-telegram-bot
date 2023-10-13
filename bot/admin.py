@@ -1,10 +1,11 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto
-from telegram.ext import CallbackContext
-from database import Session
-from database.models import Actor
-from typing import List
 import os
+
 from sqlalchemy import or_
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import CallbackContext
+
+from database import Session
+from database.models import User
 
 
 class Admin:
@@ -35,7 +36,7 @@ class Admin:
 
     def show_all(self, update: Update, context: CallbackContext):
         session = Session()
-        actors = session.query(Actor).all()
+        actors = session.query(User).all()
         for actor in actors:
             message = self._format_actor_info(actor)
             context.bot.send_message(chat_id=update.effective_chat.id, text=message)
@@ -49,22 +50,22 @@ class Admin:
     def search(self, update: Update, context: CallbackContext, keyword: str):
         session = Session()
         actors = (
-            session.query(Actor)
+            session.query(User)
             .filter(
                 or_(
-                    Actor.first_name.contains(keyword),
-                    Actor.last_name.contains(keyword),
-                    Actor.date_of_birth.contains(keyword),
-                    Actor.phone.contains(keyword),
-                    Actor.email.contains(keyword),
-                    Actor.social_media_link.contains(keyword),
-                    Actor.sizes.contains(keyword),
-                    Actor.hair_colour.contains(keyword),
-                    Actor.eyes_colour.contains(keyword),
-                    Actor.type.contains(keyword),
-                    Actor.actors_skills.contains(keyword),
-                    Actor.language.contains(keyword),
-                    Actor.driver_license.contains(keyword),
+                    User.first_name.contains(keyword),
+                    User.last_name.contains(keyword),
+                    User.date_of_birth.contains(keyword),
+                    User.phone.contains(keyword),
+                    User.email.contains(keyword),
+                    User.social_media_link.contains(keyword),
+                    User.sizes.contains(keyword),
+                    User.hair_colour.contains(keyword),
+                    User.eyes_colour.contains(keyword),
+                    User.type.contains(keyword),
+                    User.actors_skills.contains(keyword),
+                    User.language.contains(keyword),
+                    User.driver_license.contains(keyword),
                 )
             )
             .all()
@@ -79,7 +80,7 @@ class Admin:
                         chat_id=update.effective_chat.id, photo=photo_id
                     )
 
-    def _format_actor_info(self, actor: Actor) -> str:
+    def _format_actor_info(self, actor: User) -> str:
         info = [
             f"🆔ID: {actor.id}",
             f"👤First name: {actor.first_name}",

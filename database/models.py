@@ -1,12 +1,11 @@
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Date, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
-# Our class model for db
 
 
-class Actor(Base):
-    __tablename__ = "actors"
+class User(Base):
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
     first_name = Column(String)
@@ -25,3 +24,6 @@ class Actor(Base):
     photo_1 = Column(String)
     photo_2 = Column(String)
     photo_3 = Column(String)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

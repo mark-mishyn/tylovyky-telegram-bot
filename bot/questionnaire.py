@@ -1,8 +1,10 @@
 from datetime import datetime
-from telegram import Update, InputMediaPhoto, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import CallbackContext, CallbackQueryHandler
-from database.models import Actor
+
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import CallbackContext
+
 from database import Session
+from database.models import User
 
 
 class Questionnaire:
@@ -134,7 +136,7 @@ class Questionnaire:
 
         photo = update.message.photo[-1]
         session = Session()
-        actor = session.query(Actor).filter_by(id=update.effective_user.id).first()
+        actor = session.query(User).filter_by(id=update.effective_user.id).first()
         setattr(actor, f"photo_{self.received_photos+1}", photo.file_id)
         session.commit()
 
@@ -157,9 +159,7 @@ class Questionnaire:
     def save_answer(self, update: Update, context: CallbackContext):
         # Save user response
         session = Session()
-        actor = session.query(Actor).get(update.effective_user.id)
-        print(111111111111, self.current_question)
-        print(2222222, self.attributes)
+        actor = session.query(User).get(update.effective_user.id)
         attribute_name = self.attributes[self.current_question]
         # If the actor exists, update its data
         if actor:
@@ -180,7 +180,7 @@ class Questionnaire:
             session.merge(actor)
         else:
             # If the actor does not exist, create a new entry
-            actor = Actor(id=update.effective_user.id)
+            actor = User(id=update.effective_user.id)
             if attribute_name == "date_of_birth":
                 try:
                     date_of_birth = datetime.strptime(

@@ -1,18 +1,14 @@
 import os
+
+from dotenv import load_dotenv
 from telegram import Update
-from telegram.ext import (
-    Updater,
-    CommandHandler,
-    MessageHandler,
-    Filters,
-    CallbackQueryHandler,
-    CallbackContext,
-)
+from telegram.ext import (CallbackContext, CallbackQueryHandler,
+                          CommandHandler, Filters, MessageHandler, Updater)
+
 from bot.admin import Admin
+from bot.bot import Bot
 from bot.questionnaire import Questionnaire
 from database import Base, engine
-from dotenv import load_dotenv
-from bot.bot import Bot
 
 
 def main():
