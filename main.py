@@ -6,18 +6,22 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from telegram import Update
-from telegram.ext import (CallbackContext, CallbackQueryHandler,
-                          CommandHandler, Filters, MessageHandler, Updater)
+from telegram.ext import (
+    CallbackContext,
+    CallbackQueryHandler,
+    CommandHandler,
+    Filters,
+    MessageHandler,
+    Updater,
+)
 
 from bot.admin import Admin
 from bot.questionnaire import Questionnaire
-from database import Base, engine
 
 
 def main():
+    print('---Bot started---')
 
-    # Create tables in the database if they don't already exist
-    Base.metadata.create_all(engine)
     admin = Admin()
     questionnaire = Questionnaire()
 

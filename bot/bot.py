@@ -1,8 +1,13 @@
 import os
 
 from telegram import Update
-from telegram.ext import (CallbackContext, CommandHandler, Filters,
-                          MessageHandler, Updater)
+from telegram.ext import (
+    CallbackContext,
+    CommandHandler,
+    Filters,
+    MessageHandler,
+    Updater,
+)
 
 from bot.admin import Admin
 from bot.questionnaire import Questionnaire
