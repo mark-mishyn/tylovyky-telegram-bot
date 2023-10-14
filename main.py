@@ -1,23 +1,23 @@
 import os
 
 from dotenv import load_dotenv
+
+# have to load env before imports from our database module
+load_dotenv()
+
 from telegram import Update
 from telegram.ext import (CallbackContext, CallbackQueryHandler,
                           CommandHandler, Filters, MessageHandler, Updater)
 
 from bot.admin import Admin
-from bot.bot import Bot
 from bot.questionnaire import Questionnaire
 from database import Base, engine
 
 
 def main():
-    # Load environment variables
-    load_dotenv()
 
     # Create tables in the database if they don't already exist
     Base.metadata.create_all(engine)
-    bot = Bot()
     admin = Admin()
     questionnaire = Questionnaire()
 
@@ -31,6 +31,7 @@ def main():
         if admin.is_admin(update.effective_user.id):
             admin.handle(update, context)
         else:
+            # TODO check questionnaire.restart!
             questionnaire.restart(update, context)
 
     def handle_message(update: Update, context: CallbackContext):

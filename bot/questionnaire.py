@@ -118,8 +118,6 @@ class Questionnaire:
     def handle_message(self, update: Update, context: CallbackContext):
         # Handling the response to the questionnaire question
         self.save_answer(update, context)
-        print(1111111111, self.current_question)
-        print(2222, self.questions)
         self.current_question += 1
         if self.current_question < len(self.questions[self.language]):
             self.ask_question(update, context)
